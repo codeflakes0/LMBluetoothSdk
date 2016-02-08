@@ -46,6 +46,18 @@ public abstract class Bluetooth {
     protected BaseListener mBluetoothListener;
     protected Context mContext;
 
+    public enum EMode {
+        EClient,
+        EServer,
+        ENotSpecified
+    }
+
+    static public EMode mMode = EMode.ENotSpecified;
+
+    static public void setMode(EMode aMode) {
+        mMode = aMode;
+    }
+
     /**
      * Register broadcast receiver for current context.
      */
@@ -60,6 +72,8 @@ public abstract class Bluetooth {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        filter.addAction(BluetoothDevice.ACTION_UUID);
+        filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
 
         mReceiver = new BlueToothReceiver(mBluetoothListener);
         mContext.registerReceiver(mReceiver, filter);

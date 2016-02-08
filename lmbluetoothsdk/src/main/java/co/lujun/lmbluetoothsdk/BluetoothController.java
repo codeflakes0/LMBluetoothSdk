@@ -99,6 +99,10 @@ public class BluetoothController extends Bluetooth {
         return true;
     }
 
+    public boolean isScanning() {
+        return mBluetoothAdapter.isDiscovering();
+    }
+
     @Override
     public boolean startScan() {
         if (!isAvailable() && !isEnabled()){
@@ -128,7 +132,7 @@ public class BluetoothController extends Bluetooth {
     @Override
     public void startAsServer() {
         if (mBluetoothService != null){
-            mBluetoothService.start();
+            mBluetoothService.startListening();
         }
     }
 
@@ -161,6 +165,12 @@ public class BluetoothController extends Bluetooth {
 
     @Override
     public void disconnect() {
+        if (mBluetoothService != null){
+            mBluetoothService.stop();
+        }
+    }
+
+    public void disconnectClient() {
         if (mBluetoothService != null){
             mBluetoothService.stop();
         }

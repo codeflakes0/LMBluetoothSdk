@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import co.lujun.lmbluetoothsdk.BluetoothController;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 import co.lujun.lmbluetoothsdk.base.BluetoothListener;
 import co.lujun.lmbluetoothsdk.base.State;
 
@@ -40,12 +41,12 @@ public class ClassicBluetoothActivity extends AppCompatActivity {
 
     private BluetoothListener mListener = new BluetoothListener() {
         @Override
-        public void onActionStateChanged(int preState, int state) {
+        public void onActionStateChanged(Bluetooth.EMode aMode, int preState, int state) {
             tvBTState.setText("Bluetooth state: " + Utils.transBtStateAsString(state));
         }
 
         @Override
-        public void onActionDiscoveryStateChanged(String discoveryState) {
+        public void onActionDiscoveryStateChanged(Bluetooth.EMode aMode, String discoveryState) {
             if (discoveryState.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)) {
                 Toast.makeText(ClassicBluetoothActivity.this, "scanning!", Toast.LENGTH_SHORT).show();
             } else if (discoveryState.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
@@ -54,12 +55,12 @@ public class ClassicBluetoothActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onActionScanModeChanged(int preScanMode, int scanMode) {
+        public void onActionScanModeChanged(Bluetooth.EMode aMode, int preScanMode, int scanMode) {
             Log.d(TAG, "preScanMode:" + preScanMode + ", scanMode:" + scanMode);
         }
 
         @Override
-        public void onBluetoothServiceStateChanged(int state) {
+        public void onBluetoothServiceStateChanged(Bluetooth.EMode aMode, int state) {
             Log.d(TAG, "bluetooth service state:" + state);
             if (state == State.STATE_CONNECTED) {
                 Intent intent = new Intent(ClassicBluetoothActivity.this, ChatActivity.class);
@@ -68,13 +69,23 @@ public class ClassicBluetoothActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onActionDeviceFound(BluetoothDevice device) {
+        public void onActionDeviceFound(Bluetooth.EMode aMode, BluetoothDevice device) {
             mList.add(device.getName() + "@" + device.getAddress());
             mFoundAdapter.notifyDataSetChanged();
         }
 
         @Override
         public void onReadData(final BluetoothDevice device, final byte[] data) {
+        }
+
+        @Override
+        public void onActionDeviceNameChanged(BluetoothDevice device) {
+
+        }
+
+        @Override
+        public void onActionDeviceServiceDetected(BluetoothDevice device) {
+
         }
     };
 
@@ -87,8 +98,9 @@ public class ClassicBluetoothActivity extends AppCompatActivity {
     }
 
     private void initBT(){
+        Bluetooth.setMode(Bluetooth.EMode.ENotSpecified);
         mBluetoothController = BluetoothController.getInstance().build(this);
-        mBluetoothController.setAppUuid(UUID.fromString("fa87c0d0-afac-12de-8a39-0450200c9a66"));
+        mBluetoothController.setAppUuid(UUID.fromString("EB230DAC-16ED-4D69-AB09-SF4992461C33"));
         mBluetoothController.setBluetoothListener(mListener);
 
         tvBTState.setText("Bluetooth state: "

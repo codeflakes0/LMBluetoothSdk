@@ -254,7 +254,7 @@ public class BluetoothLEController extends Bluetooth {
         @Override
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
             if (mBluetoothListener != null) {
-                mBluetoothListener.onActionDeviceFound(device);
+                mBluetoothListener.onActionDeviceFound(Bluetooth.mMode, device);
             }
         }
 
@@ -268,7 +268,7 @@ public class BluetoothLEController extends Bluetooth {
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
             if (mBluetoothListener != null) {
-                mBluetoothListener.onActionDeviceFound(result.getDevice());
+                mBluetoothListener.onActionDeviceFound(Bluetooth.mMode, result.getDevice());
             }
         }
 

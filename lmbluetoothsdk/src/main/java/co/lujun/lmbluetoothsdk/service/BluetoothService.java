@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import co.lujun.lmbluetoothsdk.base.BaseListener;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 import co.lujun.lmbluetoothsdk.base.BluetoothListener;
 import co.lujun.lmbluetoothsdk.base.State;
 
@@ -49,7 +50,7 @@ public class BluetoothService {
 
     // Hint: If you are connecting to a Bluetooth serial board then try
     // using the well-known SPP UUID 00001101-0000-1000-8000-00805F9B34FB.
-    private UUID mAppUuid = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+    private UUID mAppUuid = UUID.fromString("EB230DAC-16ED-4D69-AB09-2F4992461C33");
 
     public BluetoothService() {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -87,7 +88,7 @@ public class BluetoothService {
     private synchronized void setState(int state) {
         mState = state;
         if (mBluetoothListener != null){
-            mBluetoothListener.onBluetoothServiceStateChanged(state);
+            mBluetoothListener.onBluetoothServiceStateChanged(Bluetooth.mMode, state);
         }
     }
 
@@ -104,15 +105,8 @@ public class BluetoothService {
     /**
      * Start AcceptThread to begin a session in listening (server) mode.
      */
-    public synchronized void start() {
-        if (mConnectThread != null) {
-            mConnectThread.cancel();
-            mConnectThread = null;
-        }
-        if (mConnectedThread != null) {
-            mConnectedThread.cancel(); 
-            mConnectedThread = null;
-        }
+    public synchronized void startListening() {
+        stopClientConnection();
         if (mAcceptThread == null) {
             mAcceptThread = new AcceptThread();
             mAcceptThread.start();
@@ -143,28 +137,28 @@ public class BluetoothService {
      * @param socket The BluetoothSocket on which the connection was made
      */
     public synchronized void connected(BluetoothSocket socket) {
-        if (mConnectThread != null) {
-            mConnectThread.cancel();
-            mConnectThread = null;
-        }
-        if (mConnectedThread != null) {
-            mConnectedThread.cancel();
-            mConnectedThread = null;
-        }
-        if (mAcceptThread != null) {
-            mAcceptThread.cancel();
-            mAcceptThread = null;
-        }
+        stopClientConnection();
+        stopListening();
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
         mBluetoothDevice = socket.getRemoteDevice();
         setState(State.STATE_CONNECTED);
     }
 
-    /**
-     * Stop all threads.
+    /*
+     *
      */
-    public synchronized void stop() {
+    public void stopListening() {
+        if (mAcceptThread != null) {
+            mAcceptThread.cancel();
+            mAcceptThread = null;
+        }
+    }
+
+    /*
+     *
+     */
+    public void stopClientConnection() {
         if (mConnectThread != null) {
             mConnectThread.cancel();
             mConnectThread = null;
@@ -173,10 +167,14 @@ public class BluetoothService {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
-        if (mAcceptThread != null) {
-            mAcceptThread.cancel();
-            mAcceptThread = null;
-        }
+    }
+
+    /**
+     * Stop all threads.
+     */
+    public synchronized void stop() {
+        stopClientConnection();
+        stopListening();
         mBluetoothDevice = null;
         setState(State.STATE_NONE);
     }
@@ -312,7 +310,7 @@ public class BluetoothService {
                 try {
                     mmSocket.close();
                 } catch (IOException e2) {}
-                BluetoothService.this.start();
+                BluetoothService.this.startListening();
                 return;
             }
             synchronized (BluetoothService.this) {

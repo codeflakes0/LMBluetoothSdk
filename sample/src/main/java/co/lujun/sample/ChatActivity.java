@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import co.lujun.lmbluetoothsdk.BluetoothController;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 import co.lujun.lmbluetoothsdk.base.BluetoothListener;
 import co.lujun.lmbluetoothsdk.base.State;
 
@@ -45,18 +46,18 @@ public class ChatActivity extends Activity {
         mBluetoothController = BluetoothController.getInstance();
         mBluetoothController.setBluetoothListener(new BluetoothListener() {
             @Override
-            public void onActionStateChanged(int preState, int state) {
+            public void onActionStateChanged(Bluetooth.EMode aMode, int preState, int state) {
                 Toast.makeText(ChatActivity.this, "BT state: " + state, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onActionDiscoveryStateChanged(String discoveryState) {}
+            public void onActionDiscoveryStateChanged(Bluetooth.EMode aMode, String discoveryState) {}
 
             @Override
-            public void onActionScanModeChanged(int preScanMode, int scanMode) {}
+            public void onActionScanModeChanged(Bluetooth.EMode aMode, int preScanMode, int scanMode) {}
 
             @Override
-            public void onBluetoothServiceStateChanged(final int state) {
+            public void onBluetoothServiceStateChanged(Bluetooth.EMode aMode, final int state) {
                 // If you want to update UI, please run this on UI thread
                 runOnUiThread(new Runnable() {
                     @Override
@@ -68,7 +69,7 @@ public class ChatActivity extends Activity {
             }
 
             @Override
-            public void onActionDeviceFound(BluetoothDevice device) {}
+            public void onActionDeviceFound(Bluetooth.EMode aMode, BluetoothDevice device) {}
 
             @Override
             public void onReadData(final BluetoothDevice device, final byte[] data) {
@@ -80,6 +81,16 @@ public class ChatActivity extends Activity {
                         tvContent.append(deviceName + ": " + new String(data) + "\n");
                     }
                 });
+            }
+
+            @Override
+            public void onActionDeviceNameChanged(BluetoothDevice device) {
+
+            }
+
+            @Override
+            public void onActionDeviceServiceDetected(BluetoothDevice device) {
+
             }
         });
 

@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import co.lujun.lmbluetoothsdk.base.BaseListener;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 
 /**
  * Author: lujun(http://blog.lujun.co)
@@ -56,26 +57,36 @@ public class BlueToothReceiver extends BroadcastReceiver {
             case BluetoothAdapter.ACTION_STATE_CHANGED:
                 int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
                 int preState = intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_STATE, 0);
-                mBluetoothListener.onActionStateChanged(preState, state);
+                mBluetoothListener.onActionStateChanged(Bluetooth.mMode, preState, state);
                 break;
 
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                mBluetoothListener.onActionDiscoveryStateChanged(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+                mBluetoothListener.onActionDiscoveryStateChanged(Bluetooth.mMode, BluetoothAdapter.ACTION_DISCOVERY_STARTED);
                 break;
 
             case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                mBluetoothListener.onActionDiscoveryStateChanged(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+                mBluetoothListener.onActionDiscoveryStateChanged(Bluetooth.mMode, BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
                 break;
 
             case BluetoothDevice.ACTION_FOUND:
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                mBluetoothListener.onActionDeviceFound(device);
+                mBluetoothListener.onActionDeviceFound(Bluetooth.mMode, device);
                 break;
 
             case BluetoothAdapter.ACTION_SCAN_MODE_CHANGED:
                 int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
                 int preScanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_SCAN_MODE, 0);
-                mBluetoothListener.onActionScanModeChanged(preScanMode, scanMode);
+                mBluetoothListener.onActionScanModeChanged(Bluetooth.mMode, preScanMode, scanMode);
+                break;
+
+            case BluetoothDevice.ACTION_UUID:
+                BluetoothDevice btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                mBluetoothListener.onActionDeviceServiceDetected(btd);
+                break;
+
+            case BluetoothDevice.ACTION_NAME_CHANGED:
+                BluetoothDevice btd2 = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                mBluetoothListener.onActionDeviceNameChanged(btd2);
                 break;
         }
     }

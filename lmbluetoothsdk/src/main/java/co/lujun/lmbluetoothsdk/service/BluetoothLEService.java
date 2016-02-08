@@ -38,6 +38,7 @@ import android.content.Context;
 import java.util.List;
 
 import co.lujun.lmbluetoothsdk.base.BaseListener;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 import co.lujun.lmbluetoothsdk.base.BluetoothLEListener;
 import co.lujun.lmbluetoothsdk.base.State;
 
@@ -73,7 +74,7 @@ public class BluetoothLEService {
     private synchronized void setState(int state) {
         mState = state;
         if (mBluetoothListener != null){
-            mBluetoothListener.onBluetoothServiceStateChanged(state);
+            mBluetoothListener.onBluetoothServiceStateChanged(Bluetooth.mMode, state);
         }
     }
 

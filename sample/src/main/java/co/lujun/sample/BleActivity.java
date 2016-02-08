@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.lujun.lmbluetoothsdk.BluetoothLEController;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 import co.lujun.lmbluetoothsdk.base.BluetoothLEListener;
 
 /**
@@ -45,7 +46,7 @@ public class BleActivity extends AppCompatActivity {
 
     private BluetoothLEListener mBluetoothLEListener = new BluetoothLEListener() {
         @Override
-        public void onReadData(final BluetoothGattCharacteristic characteristic) {
+        public void onReadData(Bluetooth.EMode aMode, final BluetoothGattCharacteristic characteristic) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -56,7 +57,7 @@ public class BleActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onWriteData(final BluetoothGattCharacteristic characteristic) {
+        public void onWriteData(Bluetooth.EMode aMode, final BluetoothGattCharacteristic characteristic) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -66,7 +67,7 @@ public class BleActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDataChanged(final BluetoothGattCharacteristic characteristic) {
+        public void onDataChanged(Bluetooth.EMode aMode, final BluetoothGattCharacteristic characteristic) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -77,26 +78,26 @@ public class BleActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onActionStateChanged(int preState, int state) {
+        public void onActionStateChanged(Bluetooth.EMode aMode, int preState, int state) {
             Log.d(TAG, "onActionStateChanged: " + state);
         }
 
         @Override
-        public void onActionDiscoveryStateChanged(String discoveryState) {
+        public void onActionDiscoveryStateChanged(Bluetooth.EMode aMode, String discoveryState) {
             if (discoveryState.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)) {
                 Toast.makeText(BleActivity.this, "scanning!", Toast.LENGTH_SHORT).show();
             } else if (discoveryState.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
                 Toast.makeText(BleActivity.this, "scan finished!", Toast.LENGTH_SHORT).show();
             }
-        }
+            }
 
         @Override
-        public void onActionScanModeChanged(int preScanMode, int scanMode) {
+        public void onActionScanModeChanged(Bluetooth.EMode aMode, int preScanMode, int scanMode) {
             Log.d(TAG, "onActionScanModeChanged:  " + scanMode);
         }
 
         @Override
-        public void onBluetoothServiceStateChanged(final int state) {
+        public void onBluetoothServiceStateChanged(Bluetooth.EMode aMode, final int state) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -106,7 +107,7 @@ public class BleActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onActionDeviceFound(final BluetoothDevice device) {
+        public void onActionDeviceFound(Bluetooth.EMode aMode, final BluetoothDevice device) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -114,6 +115,16 @@ public class BleActivity extends AppCompatActivity {
                     mFoundAdapter.notifyDataSetChanged();
                 }
             });
+        }
+
+        @Override
+        public void onActionDeviceNameChanged(BluetoothDevice device) {
+
+        }
+
+        @Override
+        public void onActionDeviceServiceDetected(BluetoothDevice device) {
+
         }
     };
 

@@ -27,6 +27,7 @@
 package co.lujun.lmbluetoothsdk.base;
 
 import android.bluetooth.BluetoothDevice;
+import co.lujun.lmbluetoothsdk.base.Bluetooth;
 
 /**
  * Author: lujun(http://blog.lujun.co)
@@ -41,7 +42,7 @@ public interface BaseListener {
      * Possible values are STATE_OFF, STATE_TURNING_ON,
      * STATE_ON, STATE_TURNING_OFF in {@link android.bluetooth.BluetoothAdapter} class.
      */
-    void onActionStateChanged(int preState, int state);
+    void onActionStateChanged(Bluetooth.EMode aMode, int preState, int state);
 
     /**
      * Callback when local Bluetooth adapter discovery process state changed.
@@ -50,7 +51,7 @@ public interface BaseListener {
      * ACTION_DISCOVERY_FINISHED in {@link android.bluetooth.BluetoothAdapter} class.
      *
      */
-    void onActionDiscoveryStateChanged(String discoveryState);
+    void onActionDiscoveryStateChanged(Bluetooth.EMode aMode, String discoveryState);
 
     /**
      * Callback when the current scan mode changed.
@@ -59,7 +60,7 @@ public interface BaseListener {
      * Possible values are SCAN_MODE_NONE, SCAN_MODE_CONNECTABLE,
      * SCAN_MODE_CONNECTABLE_DISCOVERABLE in {@link android.bluetooth.BluetoothAdapter} class.
      */
-    void onActionScanModeChanged(int preScanMode, int scanMode);
+    void onActionScanModeChanged(Bluetooth.EMode aMode, int preScanMode, int scanMode);
 
     /**
      * Callback when the connection state changed.
@@ -67,11 +68,14 @@ public interface BaseListener {
      * Possible values are STATE_NONE, STATE_LISTEN, STATE_CONNECTING, STATE_CONNECTED,
      * STATE_DISCONNECTED and STATE_UNKNOWN in {@link State} class.
      */
-    void onBluetoothServiceStateChanged(int state);
+    void onBluetoothServiceStateChanged(Bluetooth.EMode aMode, int state);
 
     /**
      * Callback when found device.
      * @param device a remote device
      */
-    void onActionDeviceFound(BluetoothDevice device);
+    void onActionDeviceFound(Bluetooth.EMode aMode, BluetoothDevice device);
+
+    void onActionDeviceServiceDetected(BluetoothDevice device);
+    void onActionDeviceNameChanged(BluetoothDevice device);
 }
