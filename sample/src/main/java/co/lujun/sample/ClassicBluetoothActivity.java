@@ -75,7 +75,7 @@ public class ClassicBluetoothActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onReadData(final BluetoothDevice device, final byte[] data) {
+        public void onReadData(Bluetooth.EMode aMode, final BluetoothDevice device, final byte[] data) {
         }
 
         @Override
@@ -100,7 +100,7 @@ public class ClassicBluetoothActivity extends AppCompatActivity {
     private void initBT(){
         Bluetooth.setMode(Bluetooth.EMode.ENotSpecified);
         mBluetoothController = BluetoothController.getInstance().build(this);
-        mBluetoothController.setAppUuid(UUID.fromString("EB230DAC-16ED-4D69-AB09-SF4992461C33"));
+        mBluetoothController.setAppUuid(UUID.fromString("EB230DAC-16ED-4D69-AB09-5F4992461C33"));
         mBluetoothController.setBluetoothListener(mListener);
 
         tvBTState.setText("Bluetooth state: "

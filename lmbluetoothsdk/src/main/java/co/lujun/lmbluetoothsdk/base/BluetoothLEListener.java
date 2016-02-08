@@ -38,17 +38,17 @@ public interface BluetoothLEListener extends BaseListener {
      * Read data from BLE device.
      * @param characteristic
      */
-    void onReadData(BluetoothGattCharacteristic characteristic);
+    void onReadData(Bluetooth.EMode aMode, BluetoothGattCharacteristic characteristic);
 
     /**
      * When write data to remote BLE device, the notification will send to here.
      * @param characteristic
      */
-    void onWriteData(BluetoothGattCharacteristic characteristic);
+    void onWriteData(Bluetooth.EMode aMode, BluetoothGattCharacteristic characteristic);
 
     /**
      * When data changed, the notification will send to here.
      * @param characteristic
      */
-    void onDataChanged(BluetoothGattCharacteristic characteristic);
+    void onDataChanged(Bluetooth.EMode aMode, BluetoothGattCharacteristic characteristic);
 }

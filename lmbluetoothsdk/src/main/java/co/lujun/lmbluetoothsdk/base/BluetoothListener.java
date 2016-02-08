@@ -39,5 +39,5 @@ public interface BluetoothListener extends BaseListener {
      * @param device, the connected device
      * @param data, the bytes to read
      */
-    void onReadData(BluetoothDevice device, byte[] data);
+    void onReadData(Bluetooth.EMode aMode, BluetoothDevice device, byte[] data);
 }

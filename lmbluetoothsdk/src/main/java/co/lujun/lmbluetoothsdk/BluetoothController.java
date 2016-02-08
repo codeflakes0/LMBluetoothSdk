@@ -170,9 +170,9 @@ public class BluetoothController extends Bluetooth {
         }
     }
 
-    public void disconnectClient() {
+    public void clientDisconnect() {
         if (mBluetoothService != null){
-            mBluetoothService.stop();
+            mBluetoothService.stopClientConnection();
         }
     }
 

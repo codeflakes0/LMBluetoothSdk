@@ -190,7 +190,7 @@ public class BluetoothLEService {
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
             if (mBluetoothListener != null){
-                ((BluetoothLEListener)mBluetoothListener).onReadData(characteristic);
+                ((BluetoothLEListener)mBluetoothListener).onReadData(Bluetooth.mMode, characteristic);
             }
         }
 
@@ -198,7 +198,7 @@ public class BluetoothLEService {
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
             if (mBluetoothListener != null){
-                ((BluetoothLEListener)mBluetoothListener).onWriteData(characteristic);
+                ((BluetoothLEListener)mBluetoothListener).onWriteData(Bluetooth.mMode, characteristic);
             }
         }
 
@@ -206,7 +206,7 @@ public class BluetoothLEService {
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             if (mBluetoothListener != null){
-                ((BluetoothLEListener)mBluetoothListener).onDataChanged(characteristic);
+                ((BluetoothLEListener)mBluetoothListener).onDataChanged(Bluetooth.mMode, characteristic);
             }
         }
     };

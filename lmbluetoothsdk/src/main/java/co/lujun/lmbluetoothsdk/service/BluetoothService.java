@@ -355,7 +355,7 @@ public class BluetoothService {
                 try {
                     bytes = mmInStream.read(buffer);
                     if (mBluetoothListener != null){
-                        ((BluetoothListener)mBluetoothListener).onReadData(mmSocket.getRemoteDevice(), buffer);
+                        ((BluetoothListener)mBluetoothListener).onReadData(Bluetooth.mMode, mmSocket.getRemoteDevice(), buffer);
                     }
                 } catch (IOException e) {
                     setState(co.lujun.lmbluetoothsdk.base.State.STATE_DISCONNECTED);

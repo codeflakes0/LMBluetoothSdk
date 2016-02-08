@@ -72,7 +72,7 @@ public class ChatActivity extends Activity {
             public void onActionDeviceFound(Bluetooth.EMode aMode, BluetoothDevice device) {}
 
             @Override
-            public void onReadData(final BluetoothDevice device, final byte[] data) {
+            public void onReadData(Bluetooth.EMode aMode, final BluetoothDevice device, final byte[] data) {
                 // If you want to update UI, please run this on UI thread
                 runOnUiThread(new Runnable() {
                     @Override
